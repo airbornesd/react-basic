@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const data = [
+const payload = [
   {
     name: 'sjame1958gm',
     totalTime: 6996,
@@ -25,31 +25,80 @@ const data = [
     recent: 200,
     lastTime: '3 hours ago',
   },
+  {
+    name: 'coding_pro',
+    totalTime: 8000,
+    recent: 700,
+    lastTime: '2 weeks ago',
+  },
+  {
+    name: 'gaming_fanatic',
+    totalTime: 12000,
+    recent: 1500,
+    lastTime: '4 days ago',
+  },
+  {
+    name: 'webdev_guru',
+    totalTime: 6000,
+    recent: 500,
+    lastTime: '1 day ago',
+  },
+  {
+    name: 'python_lover',
+    totalTime: 9000,
+    recent: 800,
+    lastTime: '5 days ago',
+  },
+  {
+    name: 'math_wiz',
+    totalTime: 7500,
+    recent: 600,
+    lastTime: '6 hours ago',
+  },
+  {
+    name: 'guitar_hero',
+    totalTime: 4000,
+    recent: 300,
+    lastTime: '1 month ago',
+  },
 ];
 
-function sorting(query, ascending) {
-  if (!ascending) data.sort((a, b) => b[query] - a[query]);
-  data.sort((a, b) => a[query] - b[query]);
-}
-
 export default function Table() {
+  const [data, setData] = useState(payload);
+  const [order, setOrder] = useState({ col: null, asc: true });
+
+  function sorting(query) {
+    const { col, asc } = order;
+    let desc = true;
+
+    if (col === query) desc = !asc;
+
+    const sortData = [...data].sort((a, b) =>
+      desc ? a[query] - b[query] : b[query] - a[query]
+    );
+
+    setData(sortData);
+    setOrder({ col: query, asc: desc });
+  }
+
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full border-collapse border border-gray-300">
         <thead className="bg-gray-50">
           <tr>
+            <th className="px-4 py-2 border-r border-gray-300">#</th>
             <th className="px-4 py-2 border-r border-gray-300">Name</th>
             <th
               className="px-4 py-2 border-r border-gray-300"
-              onClick={() => sorting('totalTime', true)}
+              onClick={() => sorting('totalTime')}
             >
-              All Time
+              <button>All Time</button>
             </th>
             <th
               className="px-4 py-2 border-r border-gray-300"
-              onClick={() => sorting('recent', true)}
+              onClick={() => sorting('recent')}
             >
-              Recent
+              <button>Recent</button>
             </th>
             <th className="px-4 py-2">Time</th>
           </tr>
@@ -58,6 +107,9 @@ export default function Table() {
           {data.map((value, key) => {
             return (
               <tr key={key}>
+                <td className="px-4 py-2 border-r border-gray-300">
+                  {key + 1}
+                </td>
                 <td className="px-4 py-2 border-r border-gray-300">
                   {value.name}
                 </td>
