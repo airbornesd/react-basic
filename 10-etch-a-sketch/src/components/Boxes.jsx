@@ -1,22 +1,30 @@
 import React from 'react';
+import './Boxes.css';
+
+let count = 16;
 
 const Boxes = () => {
-  const boxStyle = 'bg-blue-500 h-12 w-12 flex items-center justify-center';
+  function changeBackground(e) {
+    if (e.target.style.background === 'white') {
+      e.target.style.background = 'black';
+    } else {
+      e.target.style.background = 'white';
+    }
+  }
+
   const renderBoxes = () => {
     const boxes = [];
-    for (let row = 0; row < 3; row++) {
-      for (let col = 0; col < 3; col++) {
+    for (let row = 0; row < count; row++) {
+      for (let col = 0; col < count; col++) {
         boxes.push(
-          <div key={`box-${row}-${col}`} className={boxStyle}>
-            {row * 3 + col + 1}
-          </div>
+          <div className="aspect-square" onMouseOver={changeBackground}></div>
         );
       }
     }
     return boxes;
   };
 
-  return <div className="grid grid-cols-3 gap-4">{renderBoxes()}</div>;
+  return <div className="grid-container">{renderBoxes()}</div>;
 };
 
 export default Boxes;
